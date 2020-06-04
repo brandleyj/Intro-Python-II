@@ -1,5 +1,6 @@
 from room import Room
 from player import Player
+from item import Item
 
 # Declare all the rooms
 
@@ -54,6 +55,7 @@ print(player.currentRoom)
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+
 while True:
     cmd = input("Please input n/s/e/w: ").split(" ")
     if cmd[0] == "q":
@@ -61,5 +63,17 @@ while True:
         break
     elif cmd[0] in ("n", "s", "e", "w") and len(cmd) == 1:
         player.travel(cmd[0])
+    elif cmd[0] == "add" and len(cmd) > 2:
+        item = cmd[1]
+        desc = cmd[2]
+        player.currentRoom.addItemToRoom(item, desc)
+    elif cmd[0] in ("take", "get") and len(cmd) > 1:
+        item = cmd[1]
+        player.addItemToPlayer(item)
+    elif cmd[0] in ("drop", "remove") and len(cmd) > 1:
+        item = cmd[1]
+        player.dropItemFromPlayer(item)
+    elif cmd[0] in ("i", "inventory") and len(cmd) == 1:
+        print(f"\nInventory: {[item.name for item in player.items]}\n")
     else:
         print("\nInvalid, please try again.\n")
